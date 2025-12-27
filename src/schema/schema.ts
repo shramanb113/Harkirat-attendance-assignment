@@ -1,0 +1,19 @@
+import {z} from 'zod'
+
+export const loginSchema = z.object({
+    email:z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+    password:z.string()
+
+})
+
+export type loginSchemaType = z.infer<typeof loginSchema>
+
+
+export const signupSchema = z.object({
+    name:z.string(),
+    email:z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+    password:z.string().regex(/^(?=(?:\D*\d){6}).*$/),
+    role:z.enum(['teacher','student'])
+})
+
+export type signupSchemaType = z.infer<typeof signupSchema>
