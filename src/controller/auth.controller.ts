@@ -3,23 +3,34 @@ import { loginService, signupService } from '../service/auth.service.ts';
 import { connectDB } from '../config/dbConfig.ts';
 import UserModel from '../models/user.model.ts';
 
-export const loginController = async (req: Request, res: Response) => {
-  // login controller logic here
-    const {email,password} = req.body
-    const data = await loginService(email,password)
-    if(data==1){
-        return res.status(404).json({"success":false,"message":"user not found"})
+export const loginController = async (req: any, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    const result = await loginService(email, password);
+
+    res.set('Authorization', `Bearer ${result.token}`);
+    res.status(200).json({ success: true, data: { token: result.token } });
+
+  } catch (error: any) {
+    console.error(error.message);
+
+    if (error.message === "User not found") {
+      return res.status(404).json({ 
+        success: false,
+        message: "No account found with this email"
+      });
     }
-    else if (data==2){
-        return res.status(400).json({"success":false,"message":"invalid email or password"})
+
+    if (error.message === "Incorrect password") {
+      return res.status(401).json({ 
+        success: false,
+        message: "Incorrect password"
+      });
     }
-    res.set('Authorization',`Bearer ${data}`)
-    return res.status(200).json({
-        "success":true,
-        "data":{
-            "token":data
-        }
-    })
+
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
 };
 export const signupController = async (req: Request, res: Response) => {
   try {

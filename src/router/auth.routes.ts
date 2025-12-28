@@ -1,8 +1,11 @@
 import { loginController, signupController } from "../controller/auth.controller.ts";
-import { router } from "../index.ts";
+import { Router } from "express";
 import { validateRequest } from "../middleware/validator.ts";
 import { loginSchema, signupSchema} from "../schema/schema.ts";
 
+const authRouter = Router()
 
-router.post('/signup',validateRequest(signupSchema),signupController)
-router.post('/login',validateRequest(loginSchema),loginController)
+authRouter.post('/signup',validateRequest(signupSchema),signupController)
+authRouter.post('/login',validateRequest(loginSchema),loginController)
+
+export default authRouter
