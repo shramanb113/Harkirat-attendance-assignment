@@ -35,7 +35,6 @@ export const signupService = async (
     password:string,
     role:UserRoles
 ) : Promise<boolean> => {
-    // signup service logic here
     await connectDB()
 
     const hashed = await hashPassword(password)
@@ -54,6 +53,10 @@ export const signupService = async (
     return true
 };
 
-function genrateToken(_id: Types.ObjectId, role: string | null | undefined) {
-    throw new Error("Function not implemented.");
-}
+
+
+export const getMeService = async (userId: string) => {
+  const user = await UserModel.findById(userId).select('-password');
+  return user;
+};
+

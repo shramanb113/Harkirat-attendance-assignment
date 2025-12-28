@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express';
-import { loginService, signupService } from '../service/auth.service.ts';
+import { loginService, signupService,getMeService } from '../service/auth.service.ts';
 import { connectDB } from '../config/dbConfig.ts';
 import UserModel from '../models/user.model.ts';
-import jwt from 'jsonwebtoken';
 
 export const loginController = async (req: any, res: Response) => {
   const { email, password } = req.body;
@@ -62,42 +61,19 @@ export const signupController = async (req: Request, res: Response) => {
   }
 };
 
-export const getMeController = async (req: Request, res: Response) => {
+export const getMeController = async (req: any, res: Response) => {
   try {
+    const userId = req.user?.userId;
 
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith("Bearer")) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized, no token provided"
-      });
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    const token = authHeader.split(" ")[1];
-
-    if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized, token missing"
-      });
-    }
-
-    const secret = process.env.JWT_SECRET;
-    if (!secret) throw new Error("JWT_SECRET is not defined");
-
-    const decoded = jwt.verify(token, secret) as { userId: string; role: string };
-
-
-    const user = await UserModel.findById(decoded.userId).select("-password");
+    const user = await getMeService(userId); 
 
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found"
-      });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
-
 
     res.status(200).json({
       success: true,
@@ -108,17 +84,8 @@ export const getMeController = async (req: Request, res: Response) => {
         role: user.role,
       },
     });
-
   } catch (error: any) {
-    console.error("Auth Error:", error);
-    
-    if (error.name === "JsonWebTokenError") {
-      return res.status(401).json({ success: false, message: "Invalid token" });
-    }
-    if (error.name === "TokenExpiredError") {
-      return res.status(401).json({ success: false, message: "Token expired" });
-    }
-
+    console.error(error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };

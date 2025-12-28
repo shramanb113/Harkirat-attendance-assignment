@@ -2,7 +2,7 @@ import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 import { Types } from 'mongoose';
 
 interface TokenPayload{
-    id:string,
+    userId:string,
     role:string
 }
 
@@ -19,7 +19,7 @@ export const generateToken = (
   const options = {
     expiresIn: Number(process.env.JWT_EXPIRY || '1d'),
   };
-  return jwt.sign({ id: id.toString(), role }, secret, options);
+  return jwt.sign({ userId: id.toString(), role }, secret, options);
 };
 
 export const verifyToken = (token : string)=>{
