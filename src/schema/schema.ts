@@ -17,3 +17,11 @@ export const signupSchema = z.object({
 })
 
 export type signupSchemaType = z.infer<typeof signupSchema>
+
+export const classRouteSchema = z.object({
+    className:z.string(),
+})
+
+export type classRouteSchemaType = z.infer<typeof classRouteSchema>
+
+
