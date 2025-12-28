@@ -2,10 +2,10 @@ import { WebSocketServer, WebSocket } from 'ws';
 import jwt from 'jsonwebtoken';
 import { IncomingMessage } from 'http';
 import { URL } from 'url';
-import mongoose, { Types } from 'mongoose'; // Import Types for ObjectId casting
+import mongoose, { Types } from 'mongoose'; 
 import ClassModel from '../models/class.model.ts'
 import AttendanceModel from '../models/attendance.model.ts';
-import { activeSession, resetSession } from '../store/sessionStore.ts'; // Import resetSession
+import { activeSession, resetSession } from '../store/sessionStore.ts'; 
 
 export interface SocketUser {
   userId: string;
