@@ -7,3 +7,7 @@ export const hashPassword = async (password: string): Promise<string> => {
 
   return hashed;
 };
+
+export const comparePassword = async (passwordAttempt :string , hashedPassword:string) : Promise<boolean> => {
+  return await bcrypt.compare(passwordAttempt,hashedPassword)
+}
