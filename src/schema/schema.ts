@@ -31,7 +31,3 @@ export const addStudentSchema = z.object({
 })
 export type addStudentSchemaType = z.infer<typeof addStudentSchema>
 
-export const getClassSchema = z.object({
-    studentId:z.string(),
-})
-export type getClassSchemaType = z.infer<typeof getClassSchema>
