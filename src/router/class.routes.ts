@@ -1,10 +1,14 @@
 import {Router} from 'express'
 import { checkLoggedIn } from '../middleware/loginChecking.ts'
 import { allowedUser } from '../middleware/allowedUser.ts'
-import { createClassController } from '../controller/class.controller.ts'
+import { addStudentController, createClassController, getClassController } from '../controller/class.controller.ts'
+import { validateRequest } from '../middleware/validator.ts'
+import { addStudentSchema, classRouteSchema, getClassSchema } from '../schema/schema.ts'
 
 const classRouter = Router()
 
-classRouter.post('/',checkLoggedIn,allowedUser('teacher'),createClassController)
+classRouter.post('/',checkLoggedIn,allowedUser('teacher'),validateRequest(classRouteSchema),createClassController)
+classRouter.post('/:id/add-student',checkLoggedIn,allowedUser('teacher'),validateRequest(addStudentSchema),addStudentController)
+classRouter.post('/:id',checkLoggedIn,allowedUser('teacher','student'),validateRequest(getClassSchema),getClassController)
 
 export default classRouter

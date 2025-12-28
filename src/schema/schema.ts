@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import {z} from 'zod'
 
 export const loginSchema = z.object({
@@ -25,3 +26,12 @@ export const classRouteSchema = z.object({
 export type classRouteSchemaType = z.infer<typeof classRouteSchema>
 
 
+export const addStudentSchema = z.object({
+    className:z.string(),
+})
+export type addStudentSchemaType = z.infer<typeof addStudentSchema>
+
+export const getClassSchema = z.object({
+    studentId:z.string(),
+})
+export type getClassSchemaType = z.infer<typeof getClassSchema>
