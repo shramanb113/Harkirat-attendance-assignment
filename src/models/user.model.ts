@@ -1,4 +1,4 @@
-import mongoose,  { model,models,Model, type InferSchemaType } from 'mongoose'
+import mongoose,  { model,Model, type InferSchemaType } from 'mongoose'
 import { USER_ROLES_ARRAY } from '../constants/userRoles.ts'
 
 
@@ -30,6 +30,6 @@ const userSchema = new mongoose.Schema({
 
 type User = InferSchemaType<typeof userSchema>
 
-const UserModel: Model<User> = (models.user as Model<User>) || model<User>('users',userSchema)
+const UserModel: Model<User> = (mongoose.models.user as Model<User>) || model<User>('users',userSchema)
 
 export default UserModel

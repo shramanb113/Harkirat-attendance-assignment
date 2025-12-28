@@ -2,7 +2,7 @@ import { WebSocketServer, WebSocket } from 'ws';
 import jwt from 'jsonwebtoken';
 import { IncomingMessage } from 'http';
 import { URL } from 'url';
-import mongoose, { Types } from 'mongoose'; 
+import { Types } from 'mongoose'; 
 import ClassModel from '../models/class.model.ts'
 import AttendanceModel from '../models/attendance.model.ts';
 import { activeSession, resetSession } from '../store/sessionStore.ts'; 

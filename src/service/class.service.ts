@@ -86,7 +86,6 @@ export const getMyAttendanceService = async (
   classId: string,
   studentId: string
 ) => {
-  // 1. FIND CLASS & VERIFY ENROLLMENT
   const foundClass = await ClassModel.findById(classId);
 
   if (!foundClass) {

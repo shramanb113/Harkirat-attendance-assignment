@@ -1,4 +1,4 @@
-import mongoose ,{model,models,type Model,type InferSchemaType} from "mongoose"
+import mongoose ,{model,type Model,type InferSchemaType} from "mongoose"
 import { Types } from "mongoose"
 
 
@@ -20,6 +20,6 @@ const classSchema = new mongoose.Schema({
 
 type Class = InferSchemaType<typeof classSchema>
 
-const ClassModel:Model<Class> = (models.class as Model<Class>) || model<Class>('class',classSchema)
+const ClassModel:Model<Class> = (mongoose.models.class as Model<Class>) || model<Class>('class',classSchema)
 
 export default ClassModel

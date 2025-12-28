@@ -1,4 +1,4 @@
-import jwt, { JsonWebTokenError } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
 
 interface TokenPayload{

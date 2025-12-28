@@ -1,5 +1,5 @@
-import {Types,model,models,type Model,Schema,type InferSchemaType} from 'mongoose'
-import {  AttENDANCE_STATUS_VALUES } from '../constants/attendanceStatus.ts'
+import mongoose , {Types,model,type Model,Schema,type InferSchemaType} from 'mongoose'
+import {  ATTENDANCE_STATUS_VALUES } from '../constants/attendanceStatus.ts'
 
 const attendanceSchema = new Schema({
     classId:{
@@ -14,7 +14,7 @@ const attendanceSchema = new Schema({
     },
     status:{
         type:String,
-        enum:AttENDANCE_STATUS_VALUES
+        enum:ATTENDANCE_STATUS_VALUES
 
     }
 
@@ -22,5 +22,5 @@ const attendanceSchema = new Schema({
 
 type Attendance= InferSchemaType<typeof attendanceSchema>
 
-const AttendanceModel:Model<Attendance> =(models.attendance as Model<Attendance>) || model<Attendance>('attendance',attendanceSchema)
+const AttendanceModel:Model<Attendance> =(mongoose.models.attendance as Model<Attendance>) || model<Attendance>('attendance',attendanceSchema)
 export default AttendanceModel 
