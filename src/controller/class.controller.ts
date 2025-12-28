@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { createClassService,addStudentService,getClassService } from '../service/class.service.ts';
+import { createClassService,addStudentService,getClassService, getMyAttendanceService } from '../service/class.service.ts';
 
 export const createClassController = async (req: any, res: Response) => {
   const { className } = req.body;
@@ -85,6 +85,39 @@ export const getClassController = async (req: any, res: Response) => {
 
   } catch (error: any) {
     console.error("Get Class Error:", error);
+
+    if (error.message === "Class not found") {
+      return res.status(404).json({ success: false, message: error.message });
+    }
+
+    if (error.message.includes("Forbidden")) {
+      return res.status(403).json({ success: false, message: error.message });
+    }
+
+    res.status(500).json({ success: false, message: error.message || "Server Error" });
+  }
+};
+
+
+
+
+export const getMyAttendanceController = async (req: any, res: Response) => {
+  const { id } = req.params;   
+  const studentId = req.user?.userId; 
+
+  try {
+    const status = await getMyAttendanceService(id, studentId);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        classId: id,
+        status: status, 
+      },
+    });
+
+  } catch (error: any) {
+    console.error("Get My Attendance Error:", error);
 
     if (error.message === "Class not found") {
       return res.status(404).json({ success: false, message: error.message });

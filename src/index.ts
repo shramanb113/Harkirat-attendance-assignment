@@ -2,6 +2,7 @@ import  dotenv  from "dotenv";
 import express from "express";
 import authRouter from './router/auth.routes.ts' 
 import classRouter from "./router/class.routes.ts";
+import attendanceRouter from "./router/attendance.route.ts";
 dotenv.config()
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use('/auth',authRouter)
 app.use("/class",classRouter)
+app.use("/attendance",attendanceRouter)
 
 
 app.get("/", (req, res) => {

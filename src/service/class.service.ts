@@ -1,5 +1,8 @@
 import ClassModel from '../models/class.model.ts';
 import { Types } from 'mongoose';
+import AttendanceModel from '../models/attendance.model.ts';
+import { activeSession } from '../store/sessionStore.ts'
+
 
 export const createClassService = async (
   className: string,
@@ -62,7 +65,6 @@ export const getClassService = async (
     throw new Error("Class not found");
   }
 
-
   if (userRole === 'teacher' && foundClass.teacherId.toString() === userId) {
     return foundClass;
   }
@@ -76,4 +78,46 @@ export const getClassService = async (
   }
 
   throw new Error("Forbidden: You do not have access to this class");
+};
+
+
+
+export const getMyAttendanceService = async (
+  classId: string,
+  studentId: string
+) => {
+  // 1. FIND CLASS & VERIFY ENROLLMENT
+  const foundClass = await ClassModel.findById(classId);
+
+  if (!foundClass) {
+    throw new Error("Class not found");
+  }
+
+  const isEnrolled = foundClass.studentIds.some((id) => id.toString() === studentId);
+
+  if (!isEnrolled) {
+    throw new Error("Forbidden: You are not enrolled in this class");
+  }
+
+  if (activeSession && activeSession.classId === classId) {
+    const realtimeStatus = activeSession.attendance[studentId];
+
+    if (realtimeStatus === 'present') {
+      return realtimeStatus; 
+    } else {
+      return null; 
+    }
+  }
+
+
+  const attendanceRecord = await AttendanceModel.find({
+    classId: new Types.ObjectId(classId),
+    studentId:new Types.ObjectId(studentId),
+  });
+
+  if (attendanceRecord) {
+    return "present";
+  } else {
+    return "absent"; 
+  }
 };

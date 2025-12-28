@@ -1,14 +1,15 @@
 import {Types,model,models,type Model,Schema,type InferSchemaType} from 'mongoose'
-import { required } from 'zod/mini'
-import { AttENDANCE_STATUS, AttENDANCE_STATUS_VALUES } from '../constants/attendanceStatus.ts'
+import {  AttENDANCE_STATUS_VALUES } from '../constants/attendanceStatus.ts'
 
 const attendanceSchema = new Schema({
     classId:{
         type:Types.ObjectId,
+        ref:'class',
         required:true
     },
     studentId:{
-        tyoe:Types.ObjectId,
+        type:Types.ObjectId,
+        ref:'users',
         required:true
     },
     status:{

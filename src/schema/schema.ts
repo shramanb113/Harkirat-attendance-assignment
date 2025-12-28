@@ -31,3 +31,9 @@ export const addStudentSchema = z.object({
 })
 export type addStudentSchemaType = z.infer<typeof addStudentSchema>
 
+export const startAttendanceSchema = z.object({
+  classId: z.string().min(1, "Class ID is required"),
+});
+
+export type startAttendanceSchemaType = z.infer<typeof startAttendanceSchema>;
+
